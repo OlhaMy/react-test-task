@@ -1,16 +1,17 @@
 import "./App.css";
-import { LoginForm } from "./components/LoginForm/LoginForm";
+import LoginForm from "./components/LoginForm/LoginForm";
+import SearchBar from "./components/SearchBar/SearchBar";
 
 function App() {
-  const handelLogin = (userDate) => {
-    console.log(userDate);
+  const handleLogin = (userData) => {
+    console.log(userData);
   };
 
   return (
     <>
-      <h1>Please login your account!</h1>
-
-      <LoginForm onLogin={handelLogin} />
+      <h1>Please login to your account!</h1>
+      <LoginForm onLogin={handleLogin} />
+      <SearchBar />
     </>
   );
 }

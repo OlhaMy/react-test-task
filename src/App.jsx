@@ -1,18 +1,38 @@
 import "./App.css";
-import LoginForm from "./components/LoginForm/LoginForm";
-import SearchBar from "./components/SearchBar/SearchBar";
+import SearchForm from "./components/SearchForm/SearchForm";
+import { useState } from "react";
+import { fetchArticlesWithTopic } from "./articles-api";
+import ArticlesList from "./components/ArticlesList/ArticlesList";
 
 function App() {
-  const handleLogin = (userData) => {
-    console.log(userData);
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  const handSearch = async (topic) => {
+    try {
+      setArticles([]);
+      setError(false);
+      setLoading(true);
+      const data = await fetchArticlesWithTopic(topic);
+      setArticles(data);
+    } catch (error) {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <>
-      <h1>Please login to your account!</h1>
-      <LoginForm onLogin={handleLogin} />
-      <SearchBar />
-    </>
+    <div>
+      <SearchForm onSearch={handSearch} />
+      <h1>Latest articles</h1>
+      {loading && <p>Loading data, please wait...</p>}
+      {articles.length > 0 && <ArticlesList items={articles} />}
+      {error && (
+        <p>Whoops, something went wrong! Please try reloading this page!</p>
+      )}
+    </div>
   );
 }
 
